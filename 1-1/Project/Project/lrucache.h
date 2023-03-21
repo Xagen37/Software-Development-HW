@@ -56,8 +56,8 @@ public:
         {
             assert(std::count(m_used_order.begin(), m_used_order.end(), key), "Key must exist in list");
 
-            m_used_order.remove(key);
-            m_used_order.push_front(key);
+            auto list_it = std::find(m_used_order.begin(), m_used_order.end(), key);
+            m_used_order.splice(m_used_order.begin(), m_used_order, list_it);
 
             it->second.value = val;
             it->second.pos = m_used_order.begin();
@@ -99,8 +99,8 @@ public:
 
         assert(std::count(m_used_order.begin(), m_used_order.end(), key), "Key must exist in list");
 
-        m_used_order.remove(key);
-        m_used_order.push_front(key);
+        auto list_it = std::find(m_used_order.begin(), m_used_order.end(), key);
+        m_used_order.splice(m_used_order.begin(), m_used_order, list_it);
         it->second.pos = m_used_order.begin();
 
         assert(size() <= m_capacity);
