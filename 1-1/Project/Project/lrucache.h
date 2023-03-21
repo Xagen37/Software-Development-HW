@@ -25,7 +25,7 @@ public:
     {
         if (capacity == 0)
         {
-            throw new lru_exception;
+            throw lru_exception();
         }
         // We do no other checks here, because if a user is dumb enough
         // to pass negative or too big value, he will die with OOM
@@ -48,7 +48,8 @@ public:
 
     void insert(Key key, Value val)
     {
-        assert(m_used_order.size() <= m_capacity);
+        // Check both list and map consistensy and invariant
+        assert(size() <= m_capacity);
 
         auto it = m_cache.find(key);
         if (it != m_cache.end())
@@ -81,8 +82,30 @@ public:
             assert(m_used_order.size() == m_capacity);
         }
 
-        assert(m_used_order.size() == m_cache.size());
+        assert(size() <= m_capacity);
         assert(m_used_order.front() == key);
+    }
+
+    const Value& get(const Key& key)
+    {
+        // Check both list and map consistensy and invariant
+        assert(size() <= m_capacity);
+
+        auto it = m_cache.find(key);
+        if (it == m_cache.end())
+        {
+            throw lru_exception();
+        }
+
+        assert(std::count(m_used_order.begin(), m_used_order.end(), key), "Key must exist in list");
+
+        m_used_order.remove(key);
+        m_used_order.push_front(key);
+        it->second.pos = m_used_order.begin();
+
+        assert(size() <= m_capacity);
+        assert(m_used_order.front() == key);
+        return it->second.value;
     }
 
 private:
