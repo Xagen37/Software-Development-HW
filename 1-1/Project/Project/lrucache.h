@@ -10,6 +10,12 @@ class lru_cache
 {
     const size_t DEFAULT_CAP = 10U;
 public:
+    struct lru_exception : std::exception
+    {
+        const char* what()
+        { return "LRU Cache error"; }
+    };
+
     lru_cache()
         : capacity(DEFAULT_CAP)
     {}
@@ -17,12 +23,17 @@ public:
     explicit lru_cache(size_t cap) :
         capacity(cap)
     {
-        // We do no checks here, because if a user is dumb enough
+        if (capacity == 0)
+        {
+            throw new lru_exception;
+        }
+        // We do no other checks here, because if a user is dumb enough
         // to pass negative or too big value, he will die with OOM
     }
 
     size_t get_capacity() const
     {
+        assert(capacity > 0, "Capacity must be non zero");
         return capacity;
     }
 private:
