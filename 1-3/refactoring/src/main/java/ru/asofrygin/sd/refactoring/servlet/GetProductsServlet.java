@@ -14,30 +14,29 @@ import java.sql.Statement;
  */
 public class GetProductsServlet extends HttpServlet {
 
+    public GetProductsServlet() {
+        super();
+        helper = new ServletHelper("jdbc:sqlite:test.db");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                Statement stmt = c.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
-                response.getWriter().println("<html><body>");
+        helper.connectAndExecute(stmt -> {
+            ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
+            response.getWriter().println("<html><body>");
 
-                while (rs.next()) {
-                    String  name = rs.getString("name");
-                    int price  = rs.getInt("price");
-                    response.getWriter().println(name + "\t" + price + "</br>");
-                }
-                response.getWriter().println("</body></html>");
-
-                rs.close();
-                stmt.close();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                int price   = rs.getInt("price");
+                response.getWriter().println(name + "\t" + price + "</br>");
             }
+            response.getWriter().println("</body></html>");
 
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+            rs.close();
+        });
 
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        helper.finishOkResponse(response);
     }
+
+    private final ServletHelper helper;
 }

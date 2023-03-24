@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -52,17 +53,21 @@ public class QueryServlet extends HttpServlet {
         ));
     }
 
+    public QueryServlet() {
+        super();
+        helper = new ServletHelper("jdbc:sqlite:test.db");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String command = request.getParameter("command");
+        String command = helper.getFromRequest(request, List.of("command")).get(0);
         KeyWord key = KeyWord.get(command);
         if (key == KeyWord.VOID) {
             response.getWriter().println("Unknown command: " + command);
             return;
         }
 
-        try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-            Statement stmt = c.createStatement();
+        helper.connectAndExecute(stmt -> {
             ResultSet rs = stmt.executeQuery(KeyWord.getQuery.get(key));
 
             response.getWriter().println("<html><body>");
@@ -87,13 +92,10 @@ public class QueryServlet extends HttpServlet {
 
             response.getWriter().println("</body></html>");
             rs.close();
-            stmt.close();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        });
 
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        helper.finishOkResponse(response);
     }
 
+    private final ServletHelper helper;
 }

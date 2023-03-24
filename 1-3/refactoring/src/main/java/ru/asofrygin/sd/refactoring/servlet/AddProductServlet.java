@@ -7,31 +7,32 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.List;
 
 /**
  * @author akirakozov
  */
 public class AddProductServlet extends HttpServlet {
 
+    public AddProductServlet() {
+        super();
+        helper = new ServletHelper("jdbc:sqlite:test.db");
+    }
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String name = request.getParameter("name");
-        long price = Long.parseLong(request.getParameter("price"));
+        List<String> parameters = helper.getFromRequest(request, List.of("name", "price"));
+        String sql = "INSERT INTO PRODUCT (NAME, PRICE) VALUES (\""
+                    + parameters.get(0)
+                    + "\","
+                    + Long.parseLong(parameters.get(1))
+                    + ")";
 
-        try {
-            try (Connection c = DriverManager.getConnection("jdbc:sqlite:test.db")) {
-                String sql = "INSERT INTO PRODUCT " +
-                        "(NAME, PRICE) VALUES (\"" + name + "\"," + price + ")";
-                Statement stmt = c.createStatement();
-                stmt.executeUpdate(sql);
-                stmt.close();
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        helper.connectAndExecute(stmt -> stmt.executeUpdate(sql));
 
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
+        helper.finishOkResponse(response);
         response.getWriter().println("OK");
     }
+
+    private final ServletHelper helper;
 }

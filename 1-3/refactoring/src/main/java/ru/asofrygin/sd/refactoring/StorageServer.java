@@ -24,7 +24,7 @@ public class StorageServer {
         this.port = port;
     }
 
-    public void run() throws Exception {
+    public void start() throws Exception {
         try (Connection c = DriverManager.getConnection(url)) {
             String sql = "CREATE TABLE IF NOT EXISTS PRODUCT" +
                     "(ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
