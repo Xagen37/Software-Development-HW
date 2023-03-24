@@ -21,6 +21,7 @@ public class AddProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final ResponseBuilder writer = new ResponseBuilder(response);
         List<String> parameters = helper.getFromRequest(request, List.of("name", "price"));
         String sql = "INSERT INTO PRODUCT (NAME, PRICE) VALUES (\""
                     + parameters.get(0)
@@ -30,8 +31,8 @@ public class AddProductServlet extends HttpServlet {
 
         helper.connectAndExecute(stmt -> stmt.executeUpdate(sql));
 
-        helper.finishOkResponse(response);
-        response.getWriter().println("OK");
+        writer.finishOkResponse();
+        writer.println("OK");
     }
 
     private final ServletHelper helper;

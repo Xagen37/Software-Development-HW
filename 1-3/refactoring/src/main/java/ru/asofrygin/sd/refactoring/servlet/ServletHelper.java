@@ -34,9 +34,4 @@ public class ServletHelper {
         names.forEach(name -> ret.add(request.getParameter(name)));
         return ret;
     }
-
-    public void finishOkResponse(HttpServletResponse response) {
-        response.setContentType("text/html");
-        response.setStatus(HttpServletResponse.SC_OK);
-    }
 }

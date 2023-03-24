@@ -60,24 +60,26 @@ public class QueryServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final ResponseBuilder writer = new ResponseBuilder(response);
         String command = helper.getFromRequest(request, List.of("command")).get(0);
+
         KeyWord key = KeyWord.get(command);
         if (key == KeyWord.VOID) {
-            response.getWriter().println("Unknown command: " + command);
+            writer.println("Unknown command: " + command);
             return;
         }
 
         helper.connectAndExecute(stmt -> {
             ResultSet rs = stmt.executeQuery(KeyWord.getQuery.get(key));
 
-            response.getWriter().println("<html><body>");
-            response.getWriter().println(KeyWord.getHeader.get(key));
+            writer.addBodyTags();
+            writer.println(KeyWord.getHeader.get(key));
 
             switch (KeyWord.get(command)) {
                 case COUNT:
                 case SUM:
                     if (rs.next()) {
-                        response.getWriter().println(rs.getInt(1));
+                        writer.println(String.valueOf(rs.getInt(1)));
                     }
                     break;
                 case MAX:
@@ -85,16 +87,16 @@ public class QueryServlet extends HttpServlet {
                     while (rs.next()) {
                         String  name = rs.getString("name");
                         int price  = rs.getInt("price");
-                        response.getWriter().println(name + "\t" + price + "</br>");
+                        writer.println(name + "\t" + price + "</br>");
                     }
                     break;
             }
 
-            response.getWriter().println("</body></html>");
             rs.close();
+            writer.closeBodyTags();
         });
 
-        helper.finishOkResponse(response);
+        writer.finishOkResponse();
     }
 
     private final ServletHelper helper;

@@ -21,21 +21,21 @@ public class GetProductsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        final ResponseBuilder writer = new ResponseBuilder(response);
         helper.connectAndExecute(stmt -> {
             ResultSet rs = stmt.executeQuery("SELECT * FROM PRODUCT");
-            response.getWriter().println("<html><body>");
+            writer.addBodyTags();
 
             while (rs.next()) {
                 String name = rs.getString("name");
                 int price   = rs.getInt("price");
-                response.getWriter().println(name + "\t" + price + "</br>");
+                writer.println(name + "\t" + price + "</br>");
             }
-            response.getWriter().println("</body></html>");
-
+            writer.closeBodyTags();
             rs.close();
         });
 
-        helper.finishOkResponse(response);
+        writer.finishOkResponse();
     }
 
     private final ServletHelper helper;
