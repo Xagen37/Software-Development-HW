@@ -99,17 +99,44 @@ class ServletTest {
 
     @Test
     public void testAddProduct() throws IOException, InterruptedException {
-        send("http://localhost:8081/add-product?name=item1&price=123");
+        send("http://localhost:8081/add-product?name=item1&price=1");
     }
 
     @Test
     public void testAddAndGetProduct() throws IOException, InterruptedException {
         send("http://localhost:8081/add-product?name=item2&price=2");
         send("http://localhost:8081/add-product?name=item3&price=3");
-        String response = send("http://localhost:8081/get-products");
-        List<Item> items = parseItems(parseHtml(response));
-        List<Item> expected = Arrays.asList(new Item("item2", 2), new Item("item3", 3));
+        final String response = send("http://localhost:8081/get-products");
+        final List<Item> items = parseItems(parseHtml(response));
+        final List<Item> expected = Arrays.asList(new Item("item2", 2), new Item("item3", 3));
         Assertions.assertTrue(expected.containsAll(items) && items.containsAll(expected));
     }
 
+    private int parseResult(String command) {
+        final List<String> splitted = Arrays.asList(command.split(":"));
+        final String strAnswer = splitted.get(splitted.size() - 1).trim();
+        return Integer.parseInt(strAnswer);
+    }
+
+    @Test
+    public void testCommands() throws IOException, InterruptedException {
+        send("http://localhost:8081/add-product?name=item4&price=4");
+        send("http://localhost:8081/add-product?name=item5&price=5");
+
+        String response = send("http://localhost:8081/query?command=max");
+        Item receivedItem = parseItems(parseHtml(response)).get(0);
+        Assertions.assertEquals(new Item("item5", 5), receivedItem);
+
+        response = send("http://localhost:8081/query?command=min");
+        receivedItem = parseItems(parseHtml(response)).get(0);
+        Assertions.assertEquals(new Item("item4", 4), receivedItem);
+
+        response = send("http://localhost:8081/query?command=count");
+        String received = parseHtml(response).get(0);
+        Assertions.assertEquals(2, parseResult(received));
+
+        response = send("http://localhost:8081/query?command=sum");
+        received = parseHtml(response).get(0);
+        Assertions.assertEquals(9, parseResult(received));
+    }
 }
