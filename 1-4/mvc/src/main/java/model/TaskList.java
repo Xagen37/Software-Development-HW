@@ -5,7 +5,7 @@ import java.util.List;
 public class TaskList {
     private final int id;
     private String name;
-    private final List<Task> taskList;
+    private List<Task> taskList;
 
     public TaskList(int id, String name, List<Task> taskList) {
         this.id = id;
@@ -20,4 +20,6 @@ public class TaskList {
     public void setName(String name) { this.name = name; }
 
     public List<Task> getTaskList() { return taskList; }
+
+    public void setTaskList(List<Task> taskList) { this.taskList = taskList; }
 }
