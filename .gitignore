@@ -5,5 +5,5 @@
 **/*.class
 **/*.db
 *.log
-**/*gradle*
+**/.gradle
 **/build
