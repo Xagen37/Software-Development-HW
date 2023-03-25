@@ -26,14 +26,17 @@ public class AWTDrawer extends Frame {
         g2d.clearRect(0, 0, width, height);
 
         // It probably should not be here, but whatever
-        graph = graphCreate.apply(new AWTApi(height, width, g2d));
+        if (graph == null) {
+            graph = graphCreate.apply(new AWTApi(height, width, g2d));
 
-        graph.addNodes(4);
-        graph.addEdge(0, 1);
-        graph.addEdge(1, 2);
-        graph.addEdge(2, 3);
-        graph.addEdge(3, 0);
-
+            graph.addNodes(4);
+            graph.addEdge(0, 1);
+            graph.addEdge(1, 2);
+            graph.addEdge(2, 3);
+            graph.addEdge(3, 0);
+        } else {
+            graph.setApi(new AWTApi(height, width, g2d));
+        }
 
         graph.drawGraph();
     }

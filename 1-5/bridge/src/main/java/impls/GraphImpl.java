@@ -22,6 +22,10 @@ public abstract class GraphImpl {
         radius = Math.min(center.x, center.y) / 8;
     }
 
+    public void setApi(DrawingApi drawingApi) {
+        this.drawingApi = drawingApi;
+    }
+
     public int addNode() {
         return ++maxNode;
     }
