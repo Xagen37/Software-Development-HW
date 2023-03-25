@@ -6,4 +6,5 @@
 **/*.db
 *.log
 **/.gradle
+**/gradle/wrapper
 **/build
