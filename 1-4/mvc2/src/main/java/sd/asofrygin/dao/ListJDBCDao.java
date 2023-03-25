@@ -1,7 +1,7 @@
-package dao;
+package sd.asofrygin.dao;
 
-import model.Task;
-import model.TaskList;
+import sd.asofrygin.model.Task;
+import sd.asofrygin.model.TaskList;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -41,25 +41,25 @@ public class ListJDBCDao extends JdbcDaoSupport implements ListDAO {
 
     @Override
     public int addList(TaskList list) {
-        final String query = "INSERT INTO LISTS (NAME) VALUES (" + list.getName() + ")";
+        final String query = "INSERT INTO LISTS (NAME) VALUES (\"" + list.getName() + "\")";
         return jdbcUpdate(query);
     }
 
     @Override
-    public int removeList(TaskList list) {
-        final String queryList = "DELETE FROM LISTS WHERE ID = " + list.getId();
+    public int removeList(int listId) {
+        final String queryList = "DELETE FROM LISTS WHERE ID = " + listId;
         int updated = jdbcUpdate(queryList);
 
-        final String queryTasks = "DELETE FROM TASKS WHERE LIST_ID = " + list.getId();
+        final String queryTasks = "DELETE FROM TASKS WHERE LIST_ID = " + listId;
         return updated + jdbcUpdate(queryTasks);
     }
 
     @Override
     public int addTask(int listId, Task task) {
         final String query =
-                "INSERT INTO TASKS (NAME, LIST_ID) VALUES (" +
+                "INSERT INTO TASKS (NAME, LIST_ID) VALUES (\"" +
                 task.getName() +
-                "," +
+                "\"," +
                 listId +
                 ")";
         return jdbcUpdate(query);

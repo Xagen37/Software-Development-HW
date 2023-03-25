@@ -1,7 +1,7 @@
-package dao;
+package sd.asofrygin.dao;
 
-import model.Task;
-import model.TaskList;
+import sd.asofrygin.model.Task;
+import sd.asofrygin.model.TaskList;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface ListDAO {
 
     int addList(TaskList list);
 
-    int removeList(TaskList list);
+    int removeList(int listId);
 
     int addTask(int listId, Task task);
 

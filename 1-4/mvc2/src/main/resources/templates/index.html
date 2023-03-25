@@ -1,0 +1,78 @@
+<!DOCTYPE html >
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<style type="text/css">
+    TD, TH {
+        padding: 5px;
+        border: 1px solid #fff;
+        text-align: left;
+        vertical-align: top;
+    }
+</style>
+
+<head>
+    <title>Your task lists</title>
+</head>
+<body>
+
+<h3>Task lists</h3>
+
+<table>
+    <tr>
+        <th></th>
+        <th>Список</th>
+        <th>Дела</th>
+    </tr>
+    <th:block th:each="taskList : ${taskLists}">
+        <tr>
+            <td th:text="${taskList.getId()}"/>
+            <td th:text="${taskList.getName()}"/>
+            <td>
+                <table border="5">
+                    <th:block th:each="task : ${taskList.getTaskList()}">
+                        <tr>
+                            <td th:text="${task.getId()}"/>
+                            <td th:text="${task.getName()}"/>
+                            <td th:text="${task.getDone()}"/>
+                            <td>
+                                <form method="POST" th:action="@{'/switch-task'(id=${task.getId()})}">
+                                    <input type="submit" value="Task completed. Gz">
+                                </form>
+                            </td>
+                        </tr>
+                    </th:block>
+                </table>
+
+                <form th:object="${task}" method="POST" th:action="@{'/add-task'(listId=${taskList.getId()})}">
+                    <table>
+                        <tr>
+                            <td><label>New task:</label></td>
+                            <td><input type="text" th:field="*{name}"/></td>
+                            <td><input type="submit" value="add"></td>
+                        </tr>
+                    </table>
+                </form>
+
+            </td>
+            <td>
+                <form method="POST" th:action="@{'/remove-list'(id=${taskList.getId()})}">
+                    <input type="submit" value="remove list">
+                </form>
+            </td>
+        </tr>
+    </th:block>
+</table>
+
+<h3>Add new task list</h3>
+<form th:object="${taskList}" method="POST" action="/add-list">
+    <tr>
+        <td><label>Name:</label></td>
+        <td><input type="text" th:field="*{name}"/></td>
+    </tr>
+    <br>
+    <input type="submit" value="add">
+</form>
+
+</body>
+</html>

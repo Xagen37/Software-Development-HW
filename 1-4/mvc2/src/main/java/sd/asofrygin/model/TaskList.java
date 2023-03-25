@@ -1,19 +1,15 @@
-package model;
+package sd.asofrygin.model;
 
 import java.util.List;
 
 public class TaskList {
-    private final int id;
+    private int id;
     private String name;
     private List<Task> taskList;
 
-    public TaskList(int id, String name, List<Task> taskList) {
-        this.id = id;
-        this.name = name;
-        this.taskList = taskList;
-    }
-
     public int getId() { return id; }
+
+    public void setId(int id) { this.id = id; }
 
     public String getName() { return name; }
 
