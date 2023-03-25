@@ -1,4 +1,4 @@
-package state;
+package tokenizer;
 
 import token.NumberToken;
 import token.Token;
@@ -18,7 +18,7 @@ public class Number implements State {
     public List<Token> getToken(String unparsed) {
         String[] numberAndOther = unparsed.split(" ", 2);
         int numberValue = Integer.parseInt(numberAndOther[0]);
-        unparsed = numberAndOther[1];
+        unparsed = numberAndOther.length > 1 ? numberAndOther[1] : "";
 
         List<Token> ret = new ArrayList<>(List.of(new NumberToken(numberValue)));
         ret.addAll(start.getToken(unparsed));

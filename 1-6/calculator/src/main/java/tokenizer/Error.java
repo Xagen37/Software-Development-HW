@@ -1,4 +1,4 @@
-package state;
+package tokenizer;
 
 import token.Token;
 

@@ -1,4 +1,4 @@
-package state;
+package tokenizer;
 
 import token.Brace;
 import token.Operation;

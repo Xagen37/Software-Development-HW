@@ -36,6 +36,26 @@ public class ParserVisitor implements TokenVisitor {
 
     @Override
     public void visit(Operation token) {
+        loop:
+        while (!operationStack.isEmpty() &&
+                operationStack.peek() instanceof Operation) {
+            switch (token.value) {
+                case ADD:
+                case SUB:
+                    polishNotation.add(operationStack.pop());
+                    break;
+                case MUL:
+                case DIV:
+                    Operation peeked = (Operation) operationStack.peek();
+                    if (peeked.value == Operation.OpType.MUL ||
+                        peeked.value == Operation.OpType.DIV) {
+                        polishNotation.add(operationStack.pop());
+                    } else {
+                        break loop;
+                    }
+                    break;
+            }
+        }
         operationStack.push(token);
     }
 
