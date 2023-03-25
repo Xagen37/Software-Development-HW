@@ -7,7 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.function.Function;
 
-public class AWTDrawer extends Frame {
+public class AWTDrawer extends Frame implements Drawer {
     private final Function<DrawingApi, GraphImpl> graphCreate;
     private GraphImpl graph = null;
     private final int height;

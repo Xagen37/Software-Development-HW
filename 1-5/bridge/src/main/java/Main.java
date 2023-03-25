@@ -1,4 +1,5 @@
 import apis.AWTDrawer;
+import apis.Drawer;
 import apis.DrawingApi;
 import apis.JavaFXDrawer;
 import impls.AdjMatrixGraph;
@@ -8,6 +9,8 @@ import impls.GraphImpl;
 import java.util.function.Function;
 
 public class Main {
+    final static int HEIGHT = 640;
+    final static int WIDTH = 480;
     public static void main(String[] args) {
         if (args == null || args.length != 2) {
             printUsage();
@@ -30,19 +33,19 @@ public class Main {
                 return;
         }
 
-        GraphImpl createdGraph;
+        Drawer drawer;
         switch (api) {
             case "awt":
-                AWTDrawer AWTdrawer = new AWTDrawer(graph, 640, 480);
-                AWTdrawer.run();
+                drawer = new AWTDrawer(graph, HEIGHT, WIDTH);
                 break;
             case "javafx":
-                JavaFXDrawer JFXdrawer = new JavaFXDrawer(graph, 640, 480);
-                JFXdrawer.run();
+                drawer = new JavaFXDrawer(graph, HEIGHT, WIDTH);
                 break;
             default:
                 printUsage();
+                return;
         }
+        drawer.run();
     }
 
     private static void printUsage() {

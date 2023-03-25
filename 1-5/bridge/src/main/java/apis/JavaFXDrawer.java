@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 import java.util.function.Function;
 
-public class JavaFXDrawer {
+public class JavaFXDrawer implements Drawer {
     public static class JavaFXApp extends Application {
         public static int height;
         public static int width;
