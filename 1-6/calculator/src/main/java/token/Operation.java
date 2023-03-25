@@ -3,7 +3,7 @@ package token;
 import visitor.TokenVisitor;
 
 public class Operation implements Token {
-    public enum OpType {
+    public static enum OpType {
         ADD, SUB, MUL, DIV
     }
 
