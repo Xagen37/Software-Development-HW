@@ -1,11 +1,14 @@
 package tokenizer;
 
+import aspect.Profile;
+import org.springframework.stereotype.Component;
 import token.NumberToken;
 import token.Token;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class Number implements State {
 
     private final Start start;
@@ -14,6 +17,7 @@ public class Number implements State {
         this.start = start;
     }
 
+    @Profile
     @Override
     public List<Token> getToken(String unparsed) {
         String[] numberAndOther = unparsed.split(" ", 2);

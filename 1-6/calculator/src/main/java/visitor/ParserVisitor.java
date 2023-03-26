@@ -1,5 +1,7 @@
 package visitor;
 
+import aspect.Profile;
+import org.springframework.stereotype.Component;
 import token.Brace;
 import token.NumberToken;
 import token.Operation;
@@ -9,15 +11,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+@Component
 public class ParserVisitor implements TokenVisitor {
     private final List<Token> polishNotation = new ArrayList<>();
     private final Stack<Token> operationStack = new Stack<>();
 
+    @Profile
     @Override
     public void visit(NumberToken token) {
         polishNotation.add(token);
     }
 
+    @Profile
     @Override
     public void visit(Brace token) {
         switch (token.value) {
@@ -34,6 +39,7 @@ public class ParserVisitor implements TokenVisitor {
         }
     }
 
+    @Profile
     @Override
     public void visit(Operation token) {
         loop:
@@ -59,6 +65,7 @@ public class ParserVisitor implements TokenVisitor {
         operationStack.push(token);
     }
 
+    @Profile
     public List<Token> get() {
         while (!operationStack.isEmpty()) {
             polishNotation.add(operationStack.pop());

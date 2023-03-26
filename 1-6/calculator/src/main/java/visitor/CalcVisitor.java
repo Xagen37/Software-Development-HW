@@ -1,24 +1,30 @@
 package visitor;
 
+import aspect.Profile;
+import org.springframework.stereotype.Component;
 import token.Brace;
 import token.NumberToken;
 import token.Operation;
 
 import java.util.Stack;
 
+@Component
 public class CalcVisitor implements TokenVisitor {
     private final Stack<Integer> stack = new Stack<>();
 
+    @Profile
     @Override
     public void visit(NumberToken token) {
         stack.push(token.value);
     }
 
+    @Profile
     @Override
     public void visit(Brace token) {
         throw new RuntimeException("Unexpected bracket token");
     }
 
+    @Profile
     @Override
     public void visit(Operation token) {
         if (stack.size() < 2) {
@@ -43,6 +49,7 @@ public class CalcVisitor implements TokenVisitor {
         }
     }
 
+    @Profile
     public int get() {
         return stack.peek();
     }

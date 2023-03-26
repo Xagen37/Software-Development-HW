@@ -1,5 +1,7 @@
 package tokenizer;
 
+import aspect.Profile;
+import org.springframework.stereotype.Component;
 import token.Brace;
 import token.Operation;
 import token.Token;
@@ -7,6 +9,7 @@ import token.Token;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class Start implements State {
     private final End end;
     private final Error error;
@@ -27,6 +30,7 @@ public class Start implements State {
         this.number = new Number(this);
     }
 
+    @Profile
     @Override
     public List<Token> getToken(String unparsed) {
         unparsed = unparsed.trim();
