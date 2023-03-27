@@ -18,7 +18,7 @@ import java.util.Set;
 
 @Aspect
 public class LoggingExecutionTimeAspect {
-    public static Set<String> timeLogs = Set.of(
+    public static Set<String> logs = Set.of(
             Tokenizer.getName(),
             End.getName(),
             Error.getName(),
@@ -41,7 +41,7 @@ public class LoggingExecutionTimeAspect {
 
     public Object logExecutionTime(ProceedingJoinPoint joinPoint, String name) throws Throwable {
         final long startTime = System.nanoTime();
-        if (timeLogs.contains(name)) {
+        if (logs.contains(name)) {
             System.err.println("-".repeat(tabulation) +
                     "Start method " +
                     joinPoint.getSignature().getName() +
@@ -53,7 +53,7 @@ public class LoggingExecutionTimeAspect {
         final Object result = joinPoint.proceed(joinPoint.getArgs());
 
         final long elapsedTime = System.nanoTime() - startTime;
-        if (timeLogs.contains(name)) {
+        if (logs.contains(name)) {
             tabulation--;
             System.err.println("-".repeat(tabulation) + "Finish method " + joinPoint.getSignature().getName()
                     + ", execution time in ns: " + elapsedTime);
