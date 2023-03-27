@@ -12,6 +12,10 @@ import java.util.Stack;
 public class CalcVisitor implements TokenVisitor {
     private final Stack<Integer> stack = new Stack<>();
 
+    public static String getName() {
+        return "calcVisitor";
+    }
+
     @Profile
     @Override
     public void visit(NumberToken token) {
@@ -52,5 +56,9 @@ public class CalcVisitor implements TokenVisitor {
     @Profile
     public int get() {
         return stack.peek();
+    }
+
+    public void flush() {
+        stack.clear();
     }
 }

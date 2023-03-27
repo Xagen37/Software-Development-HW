@@ -16,6 +16,10 @@ public class ParserVisitor implements TokenVisitor {
     private final List<Token> polishNotation = new ArrayList<>();
     private final Stack<Token> operationStack = new Stack<>();
 
+    public static String getName() {
+        return "parserVisitor";
+    }
+
     @Profile
     @Override
     public void visit(NumberToken token) {
@@ -71,5 +75,10 @@ public class ParserVisitor implements TokenVisitor {
             polishNotation.add(operationStack.pop());
         }
         return polishNotation;
+    }
+
+    public void flush() {
+        polishNotation.clear();
+        operationStack.clear();
     }
 }

@@ -10,6 +10,10 @@ import token.Operation;
 public class PrintVisitor implements TokenVisitor {
     private final StringBuilder builder = new StringBuilder();
 
+    public static String getName() {
+        return "printVisitor";
+    }
+
     @Profile
     @Override
     public void visit(NumberToken token) {
@@ -31,5 +35,9 @@ public class PrintVisitor implements TokenVisitor {
     @Profile
     public String get() {
         return builder.toString();
+    }
+
+    public void flush() {
+        builder.setLength(0);
     }
 }

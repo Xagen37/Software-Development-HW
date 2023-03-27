@@ -14,7 +14,7 @@ public class Error implements State {
         throw new RuntimeException("Got to Error state");
     }
 
-    static String getName() {
-        return "errorState";
+    public static String getName() {
+        return "error";
     }
 }

@@ -1,6 +1,7 @@
 package tokenizer;
 
 import aspect.Profile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import token.Brace;
 import token.Operation;
@@ -11,9 +12,12 @@ import java.util.Map;
 
 @Component
 public class Start implements State {
-    private final End end;
-    private final Error error;
-    private final Number number;
+    @Autowired
+    private End end;
+    @Autowired
+    private Error error;
+    @Autowired
+    private Number number;
 
     private final Map<Character, Token> symbolMap = Map.of(
             '+', new Operation(Operation.OpType.ADD),
@@ -24,11 +28,11 @@ public class Start implements State {
             ')', new Brace(Brace.BrType.RIGHT)
     );
 
-    public Start() {
-        this.end = new End();
-        this.error = new Error();
-        this.number = new Number(this);
-    }
+//    public Start() {
+//        this.end = new End();
+//        this.error = new Error();
+//        this.number = new Number(this);
+//    }
 
     @Profile
     @Override
@@ -51,7 +55,7 @@ public class Start implements State {
         return error.getToken(unparsed);
     }
 
-    static String getName() {
-        return "startState";
+    public static String getName() {
+        return "start";
     }
 }

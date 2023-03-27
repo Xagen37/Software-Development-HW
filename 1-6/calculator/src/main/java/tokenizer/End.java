@@ -15,7 +15,7 @@ public class End implements State {
         return Collections.emptyList();
     }
 
-    static String getName() {
-        return "endState";
+    public static String getName() {
+        return "end";
     }
 }

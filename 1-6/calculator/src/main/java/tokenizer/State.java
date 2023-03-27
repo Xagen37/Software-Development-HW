@@ -8,6 +8,6 @@ public interface State {
     List<Token> getToken(String unparsed);
 
     static String getName() {
-        return "iState";
+        return "state";
     }
 }

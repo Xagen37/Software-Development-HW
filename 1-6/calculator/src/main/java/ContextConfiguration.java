@@ -34,7 +34,7 @@ public class ContextConfiguration {
     public Error error() { return new Error(); }
 
     @Bean
-    public Number number() { return new Number(new Start()); }
+    public Number number() { return new Number(); }
 
     @Bean
     public Start start() { return new Start(); }

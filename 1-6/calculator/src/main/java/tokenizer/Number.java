@@ -1,6 +1,7 @@
 package tokenizer;
 
 import aspect.Profile;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import token.NumberToken;
 import token.Token;
@@ -11,11 +12,12 @@ import java.util.List;
 @Component
 public class Number implements State {
 
-    private final Start start;
+    @Autowired
+    private Start start;
 
-    public Number(Start start) {
-        this.start = start;
-    }
+//    public Number(Start start) {
+//        this.start = start;
+//    }
 
     @Profile
     @Override
@@ -29,7 +31,7 @@ public class Number implements State {
         return ret;
     }
 
-    static String getName() {
-        return "numberState";
+    public static String getName() {
+        return "number";
     }
 }
