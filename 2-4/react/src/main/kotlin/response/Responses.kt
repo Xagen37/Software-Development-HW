@@ -25,12 +25,12 @@ object GetResponseHandler {
             "/" -> response.writeString(
                 getProducts().toList().map {
                     val oldValues = request.cookies["wallets"]
-                    val values = if (oldValues == null || oldValues.size == 0) {
+                    val wallets = if (oldValues == null || oldValues.size == 0) {
                         Currency.RUB
                     } else {
                         Currency.valueOf(oldValues.first().value())
                     }
-                    index(it, values)
+                    index(it, wallets)
                 }
             )
             "/register" -> response.writeString(

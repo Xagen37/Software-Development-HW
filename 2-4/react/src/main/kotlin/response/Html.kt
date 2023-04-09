@@ -50,7 +50,7 @@ fun register(): String {
                     textInput(name = "login")
                 }
                 select {
-                    name = "values"
+                    name = "wallets"
                     for (v in Currency.values()) {
                         option {
                             value = v.name
